@@ -1,0 +1,47 @@
+
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" 
+                    class="navbar-toggle"
+                    data-toggle="collapse" 
+                    data-target="#mynavbar-content">
+                <span  class="icon-bar"></span>
+                <span  class="icon-bar"></span>
+                <span  class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="home.jsp" title="Home"><span class="glyphicon glyphicon-home"></span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="mynavbar-content">
+            <ul class="nav navbar-nav">
+                <li class="dropdown" id="addResource">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Resources<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="addModules.jsp">Add Modules</a></li>
+                        <li><a href="addTeachers.jsp">Add Teachers</a></li>
+                        <li><a href="addClassrooms.jsp">Add Classrooms</a></li>
+                        <li><a href="addGroups.jsp">Add Groups</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" id="editResource">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Modify Resources<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="editModules.jsp">Modify Modules</a></li>
+                        <li><a href="editTeachers.jsp">Modify Teachers</a></li>
+                        <li><a href="editClassrooms.jsp">Modify Classrooms</a></li>
+                        <li><a href="editGroups.jsp">Modify Groups</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" id="addRelation">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add Relation<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="teacherModule.jsp">Teacher-Module</a></li>
+                        <li><a href="groupModule.jsp">Group-Module</a></li>
+                    </ul>
+                </li>
+                <li><a href="generate.jsp">Generate</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right"><li><a href="LogoutController" id="logout">Logout</a></li></ul>
+        </div>
+    </div>
+</div>
