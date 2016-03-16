@@ -25,10 +25,15 @@ public class HomeController {
     @Autowired
     private LoginRepository loginRepo;
 
+    /**
+     * Routes to /.
+     *
+     * @return The login page if its the new session otherwise the homepage.
+     */
     @RequestMapping(method = GET)
     public String showHomepage() {
         if (session.getUserId() != 0) {
-            return "redirect:/test";
+            return "redirect:/home";
         }
         return "index";
     }
@@ -43,14 +48,19 @@ public class HomeController {
             return "index";
         } else {
             redirectAttributes.addFlashAttribute("login", login);
-            return "redirect:/test";
+            return "redirect:/home";
         }
     }
 
     @RequestMapping(method = GET, value = "logout")
     public String logoutUser(HttpSession sessionHTTP) {
         sessionHTTP.invalidate();
-        return "redirect:/";
+        return "redirect:/home";
+    }
+
+    @RequestMapping(method = GET, value = "home")
+    public String showHomePage() {
+        return "home";
     }
 
 }
