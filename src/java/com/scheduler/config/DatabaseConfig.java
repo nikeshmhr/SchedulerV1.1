@@ -21,7 +21,7 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource getDataSource() {
-        DriverManagerDataSource source = new DriverManagerDataSource("jdbc:mysql://localhost:3306/scheduler", "root", "");
+        DriverManagerDataSource source = new DriverManagerDataSource("jdbc:mysql://localhost:3306/schedulerv11", "root", "");
         source.setDriverClassName("com.mysql.jdbc.Driver");
         
         return source;
