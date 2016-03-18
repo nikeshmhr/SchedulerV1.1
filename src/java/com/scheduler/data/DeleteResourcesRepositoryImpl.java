@@ -26,6 +26,16 @@ public class DeleteResourcesRepositoryImpl implements DeleteResourcesRepository 
                 "DELETE FROM teachers WHERE teacherId=?",
                 teacherId
         );
+
+        return affectedRows;
+    }
+
+    @Override
+    public int deleteModule(String moduleCode) {
+        int affectedRows = jdbc.update(
+                "DELETE FROM modules WHERE moduleCode=?",
+                moduleCode
+        );
         
         return affectedRows;
     }

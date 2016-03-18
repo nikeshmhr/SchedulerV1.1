@@ -1,10 +1,15 @@
 package com.scheduler.data;
 
+import com.scheduler.model.ClassType;
+import com.scheduler.model.Module;
 import com.scheduler.model.Teacher;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -58,9 +63,9 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
             id = "TH" + count;
             count++;
         } while (!isIdAvailable(id));
-        
+
         teacher.setTeacherId(id);
-        
+
         affectedRows = jdbc.update(
                 "INSERT INTO teachers VALUES(?, ?)",
                 teacher.getTeacherId(),
@@ -71,7 +76,9 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
     }
 
     /**
-     *  Checks where the provided id for a teacher already exists in database or not.
+     * Checks where the provided id for a teacher already exists in database or
+     * not.
+     *
      * @param id The id of the teacher to check against in a database.
      * @return True if id is not already in database otherwise false.
      */
@@ -97,6 +104,74 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
         }
 
         return status;
+    }
+
+    @Override
+    public List<Module> getListOfAllModules() throws EmptyResultDataAccessException {
+        List<Module> listOfModules;
+
+        listOfModules = jdbc.query(
+                "SELECT * FROM modules ORDER BY year, semester",
+                new RowMapper<Module>() {
+
+                    @Override
+                    public Module mapRow(ResultSet rs, int i) throws SQLException {
+                        return new Module(rs.getString("moduleCode"), rs.getString("moduleName"), new ArrayList<ClassType>(), rs.getInt("year"), rs.getInt("semester"));
+                    }
+                }
+        );
+
+        for (Module module : listOfModules) {
+            String moduleCode = module.getModuleCode();
+            List<ClassType> classTypes;
+            classTypes = jdbc.query(
+                    "SELECT * FROM module_classes WHERE moduleCode=?",
+                    new RowMapper<ClassType>() {
+
+                        @Override
+                        public ClassType mapRow(ResultSet rs, int i) throws SQLException {
+                            return new ClassType(rs.getInt("typeId"), rs.getDouble("classHours"));
+                        }
+                    },
+                    moduleCode
+            );
+
+            module.setTypeOfClasses(classTypes);
+        }
+
+        return listOfModules;
+    }
+
+    /**
+     *
+     * @param module
+     * @return
+     */
+    @Override
+    public int addModule(Module module) throws DataAccessException{
+        int affectedRows;
+
+        affectedRows = jdbc.update(
+                "INSERT INTO modules VALUES(?, ?, ?, ?)",
+                module.getModuleCode(),
+                module.getModuleName(),
+                module.getYear(),
+                module.getSem()
+        );
+
+        if (affectedRows > 0) {
+            List<ClassType> classTypes = module.getTypeOfClasses();
+            for (ClassType classType : classTypes) {
+                jdbc.update(
+                        "INSERT INTO module_classes VALUES(?, ?, ?)",
+                        classType.getTypeId(),
+                        module.getModuleCode(),
+                        classType.getHours()
+                );
+            }
+        }
+
+        return affectedRows;
     }
 
 }

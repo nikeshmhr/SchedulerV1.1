@@ -55,7 +55,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>&nbsp;</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,6 +83,8 @@
                 </div>
                 <!-- END OF TABLE -->
 
+                
+                
                 <!-- FORM TO ADD TEACHERS -->
                 <div class="col-md-4 col-md-offset-1">
                     <h2 class="text-primary">Add teachers</h2>
