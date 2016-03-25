@@ -50,8 +50,20 @@ public class DeleteResourcesController {
         } else {
             redirectAttr.addFlashAttribute("errorMessage", "Failed to delete classroom with room code " + roomCode);
         }
-        
+
         return "redirect:/resources/classrooms";
+    }
+
+    @RequestMapping(value = "/groups/delete/{groupCode}", method = GET)
+    public String deleteGroup(@PathVariable String groupCode, RedirectAttributes redirectAttr) {
+        int affectedRows = deleteResources.deleteGroup(groupCode);
+        if (affectedRows > 0) {
+            redirectAttr.addFlashAttribute("message", "Group's record deleted successfully.");
+        } else {
+            redirectAttr.addFlashAttribute("errorMessage", "Failed to delete group with group code " + groupCode);
+        }
+        
+        return "redirect:/resources/groups";
     }
 
 }

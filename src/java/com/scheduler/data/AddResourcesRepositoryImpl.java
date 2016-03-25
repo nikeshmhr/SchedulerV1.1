@@ -2,6 +2,7 @@ package com.scheduler.data;
 
 import com.scheduler.model.ClassType;
 import com.scheduler.model.Classroom;
+import com.scheduler.model.Group;
 import com.scheduler.model.Module;
 import com.scheduler.model.Teacher;
 import java.sql.ResultSet;
@@ -200,15 +201,46 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
     @Override
     public int addClassroom(Classroom classroom) throws DataAccessException {
         int affectedRows;
-        
+
         affectedRows = jdbc.update(
-                "INSERT INTO classrooms VALUES(?, ?, ?, ?)", 
+                "INSERT INTO classrooms VALUES(?, ?, ?, ?)",
                 classroom.getRoomCode(),
                 classroom.getRoomName(),
                 classroom.getCapacity(),
                 classroom.getRoomType()
         );
-        
+
+        return affectedRows;
+    }
+
+    @Override
+    public List<Group> getListOfAllGroups() throws EmptyResultDataAccessException {
+        List<Group> listOfGroups;
+
+        listOfGroups = jdbc.query(
+                "SELECT * FROM groups ORDER BY groupCode",
+                new RowMapper<Group>() {
+
+                    @Override
+                    public Group mapRow(ResultSet rs, int i) throws SQLException {
+                        return new Group(rs.getString("groupCode"), rs.getInt("noOfStudents"));
+                    }
+                }
+        );
+
+        return listOfGroups;
+    }
+
+    @Override
+    public int addGroup(Group group) throws DataAccessException {
+        int affectedRows;
+
+        affectedRows = jdbc.update(
+                "INSERT INTO groups VALUES(?, ?)",
+                group.getGroupCode(),
+                group.getNoOfStudents()
+        );
+
         return affectedRows;
     }
 

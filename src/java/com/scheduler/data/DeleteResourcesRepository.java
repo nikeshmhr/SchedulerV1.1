@@ -11,4 +11,6 @@ public interface DeleteResourcesRepository {
     int deleteModule(String moduleCode);
     
     int deleteClassroom(String roomCode);
+    
+    int deleteGroup(String groupCode);
 }

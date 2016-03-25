@@ -50,4 +50,14 @@ public class DeleteResourcesRepositoryImpl implements DeleteResourcesRepository 
         return affectedRows;
     }
 
+    @Override
+    public int deleteGroup(String groupCode) {
+        int affectedRows = jdbc.update(
+                "DELETE FROM groups WHERE groupCode=?",
+                groupCode
+        );
+        
+        return affectedRows;
+    }
+
 }

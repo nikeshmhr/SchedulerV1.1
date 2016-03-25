@@ -3,6 +3,7 @@ package com.scheduler.controller;
 import com.scheduler.data.AddResourcesRepository;
 import com.scheduler.model.ClassType;
 import com.scheduler.model.Classroom;
+import com.scheduler.model.Group;
 import com.scheduler.model.Module;
 import com.scheduler.model.Teacher;
 import java.util.ArrayList;
@@ -108,6 +109,29 @@ public class AddResourcesController {
             System.out.println("Exception adding classroom: " + ex.getMessage());
         }
         return "redirect:/resources/classrooms";
+    }
+
+    @RequestMapping(value = "/groups", method = GET)
+    public String showGroups(Model model) {
+        try {
+            List<Group> listOfGroups = repository.getListOfAllGroups();
+            model.addAttribute(listOfGroups);
+        } catch (EmptyResultDataAccessException ex) {
+            model.addAttribute("errorMessage", "Something went wrong while fetching list of groups.");
+        }
+        return "groups";
+    }
+
+    @RequestMapping(value = "/groups/add", method = POST)
+    public String processGroupAddForm(@ModelAttribute("group") Group group, RedirectAttributes redirAttr) {
+        try{
+            int affectedRows = repository.addGroup(group);
+            redirAttr.addFlashAttribute("message", "Group added successfully.");
+        }catch(EmptyResultDataAccessException ex){
+            redirAttr.addFlashAttribute("errorMessage", "Could not add group due to internal problem.");
+            System.out.println("Exception adding group: " + ex.getMessage());
+        }
+        return "redirect:/resources/groups";
     }
 
 }
