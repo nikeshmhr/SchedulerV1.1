@@ -1,6 +1,7 @@
 package com.scheduler.data;
 
 import com.scheduler.model.ClassType;
+import com.scheduler.model.Classroom;
 import com.scheduler.model.Module;
 import com.scheduler.model.Teacher;
 import java.sql.ResultSet;
@@ -148,7 +149,7 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
      * @return
      */
     @Override
-    public int addModule(Module module) throws DataAccessException{
+    public int addModule(Module module) throws DataAccessException {
         int affectedRows;
 
         affectedRows = jdbc.update(
@@ -171,6 +172,43 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
             }
         }
 
+        return affectedRows;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<Classroom> getListOfAllClassrooms() throws EmptyResultDataAccessException {
+        List<Classroom> listOfClassrooms;
+
+        listOfClassrooms = jdbc.query(
+                "SELECT * FROM classrooms ORDER BY typeId, roomCapacity DESC",
+                new RowMapper<Classroom>() {
+
+                    @Override
+                    public Classroom mapRow(ResultSet rs, int i) throws SQLException {
+                        return new Classroom(rs.getString("roomCode"), rs.getString("roomName"), rs.getInt("typeId"), rs.getInt("roomCapacity"));
+                    }
+                }
+        );
+
+        return listOfClassrooms;
+    }
+
+    @Override
+    public int addClassroom(Classroom classroom) throws DataAccessException {
+        int affectedRows;
+        
+        affectedRows = jdbc.update(
+                "INSERT INTO classrooms VALUES(?, ?, ?, ?)", 
+                classroom.getRoomCode(),
+                classroom.getRoomName(),
+                classroom.getCapacity(),
+                classroom.getRoomType()
+        );
+        
         return affectedRows;
     }
 

@@ -30,16 +30,28 @@ public class DeleteResourcesController {
         return "redirect:/resources/teachers";
     }
 
-    @RequestMapping(value = "/modules/delete/{moduleCode}", method=GET)
-    public String deleteModule(@PathVariable String moduleCode, RedirectAttributes redirectAttr){
+    @RequestMapping(value = "/modules/delete/{moduleCode}", method = GET)
+    public String deleteModule(@PathVariable String moduleCode, RedirectAttributes redirectAttr) {
         int affectedRows = deleteResources.deleteModule(moduleCode);
-        if(affectedRows > 0){
+        if (affectedRows > 0) {
             redirectAttr.addFlashAttribute("message", "Module's record deleted successfully.");
-        }else{
+        } else {
             redirectAttr.addFlashAttribute("errorMessage", "Failed to delete module with module code " + moduleCode);
         }
-        
+
         return "redirect:/resources/modules";
     }
-    
+
+    @RequestMapping(value = "/classrooms/delete/{roomCode}", method = GET)
+    public String deleteClassroom(@PathVariable String roomCode, RedirectAttributes redirectAttr) {
+        int affectedRows = deleteResources.deleteClassroom(roomCode);
+        if (affectedRows > 0) {
+            redirectAttr.addFlashAttribute("message", "Classroom's record deleted successfully.");
+        } else {
+            redirectAttr.addFlashAttribute("errorMessage", "Failed to delete classroom with room code " + roomCode);
+        }
+        
+        return "redirect:/resources/classrooms";
+    }
+
 }

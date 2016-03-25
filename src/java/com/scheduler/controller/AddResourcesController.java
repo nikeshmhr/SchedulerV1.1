@@ -1,12 +1,11 @@
 package com.scheduler.controller;
 
 import com.scheduler.data.AddResourcesRepository;
-import com.scheduler.data.AddResourcesRepositoryImpl;
 import com.scheduler.model.ClassType;
+import com.scheduler.model.Classroom;
 import com.scheduler.model.Module;
 import com.scheduler.model.Teacher;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +85,29 @@ public class AddResourcesController {
         }
 
         return "redirect:/resources/modules";
+    }
+
+    @RequestMapping(value = "/classrooms", method = GET)
+    public String showClassrooms(Model model) {
+        try {
+            List<Classroom> listOfClassrooms = repository.getListOfAllClassrooms();
+            model.addAttribute(listOfClassrooms);
+        } catch (EmptyResultDataAccessException ex) {
+            model.addAttribute("errorMessage", "Something went wrong while fetching list of classrooms.");
+        }
+        return "classrooms";
+    }
+
+    @RequestMapping(value = "/classrooms/add", method = POST)
+    public String processClassroomAddForm(@ModelAttribute("classroom") Classroom classroom, RedirectAttributes redirAttr) {
+        try {
+            int affectedRows = repository.addClassroom(classroom);
+            redirAttr.addFlashAttribute("message", "Classroom added successfully.");
+        } catch (EmptyResultDataAccessException ex) {
+            redirAttr.addFlashAttribute("errorMessage", "Could not add classroom due to internal problem");
+            System.out.println("Exception adding classroom: " + ex.getMessage());
+        }
+        return "redirect:/resources/classrooms";
     }
 
 }

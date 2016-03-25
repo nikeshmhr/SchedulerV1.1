@@ -84,7 +84,7 @@
         <%@include file="/resources/includes/functions.jsp" %>
         <%
             clearBrowsersDefaultCache(response);
-        %>      
+        %>
         <!-- CONTAINER STARTS HERE -->
         <div class="container">
             <%@include file="/resources/includes/navigation.html" %>

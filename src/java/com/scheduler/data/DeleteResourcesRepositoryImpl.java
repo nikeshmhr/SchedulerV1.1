@@ -40,4 +40,14 @@ public class DeleteResourcesRepositoryImpl implements DeleteResourcesRepository 
         return affectedRows;
     }
 
+    @Override
+    public int deleteClassroom(String roomCode) {
+        int affectedRows = jdbc.update(
+                "DELETE FROM classrooms WHERE roomCode=?",
+                roomCode
+        );
+        
+        return affectedRows;
+    }
+
 }
