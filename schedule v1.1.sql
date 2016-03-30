@@ -250,7 +250,7 @@ INSERT INTO `teachers` (`teacherId`, `teacherName`) VALUES
 ('TH5', 'Prashant Lal Shrestha'),
 ('TH6', 'Sanjeev Udash'),
 ('TH7', 'Mukesh Regmi'),
-('TH8', ' Sailesh Neupane');
+('TH8', 'Sailesh Neupane');
 
 -- --------------------------------------------------------
 

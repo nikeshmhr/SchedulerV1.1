@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -240,6 +239,71 @@ public class AddResourcesRepositoryImpl implements AddResourcesRepository {
                 group.getGroupCode(),
                 group.getNoOfStudents()
         );
+
+        return affectedRows;
+    }
+
+    @Override
+    public int updateTeacher(Teacher teacher) throws DataAccessException {
+        int affectedRows;
+
+        affectedRows = jdbc.update(
+                "UPDATE teachers SET teacherName=? WHERE teacherId=?",
+                teacher.getTeacherName(),
+                teacher.getTeacherId()
+        );
+
+        return affectedRows;
+    }
+
+    @Override
+    public int updateClassroom(Classroom classroom) throws DataAccessException {
+        int affectedRows;
+
+        affectedRows = jdbc.update(
+                "UPDATE classrooms SET roomName=?, roomCapacity=?, typeId=? WHERE roomCode=?",
+                classroom.getRoomName(),
+                classroom.getCapacity(),
+                classroom.getRoomType(),
+                classroom.getRoomCode()
+        );
+
+        return affectedRows;
+    }
+
+    @Override
+    public int updateGroup(Group group) throws DataAccessException {
+        int affectedRows;
+
+        affectedRows = jdbc.update(
+                "UPDATE groups SET noOfStudents=? WHERE groupCode=?",
+                group.getNoOfStudents(),
+                group.getGroupCode()
+        );
+
+        return affectedRows;
+    }
+
+    @Override
+    public int updateModule(Module module) throws DataAccessException {
+        int affectedRows;
+
+        affectedRows = jdbc.update(
+                "UPDATE modules SET moduleName=?, year=?, semester=? WHERE moduleCode=?",
+                module.getModuleName(),
+                module.getYear(),
+                module.getSem(),
+                module.getModuleCode()
+        );
+
+        for (ClassType type : module.getTypeOfClasses()) {
+            affectedRows = jdbc.update(
+                    "UPDATE module_classes SET classHours=? WHERE typeId=? AND moduleCode=?",
+                    type.getHours(),
+                    type.getTypeId(),
+                    module.getModuleCode()
+            );
+        }
 
         return affectedRows;
     }

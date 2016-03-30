@@ -28,4 +28,12 @@ public interface AddResourcesRepository {
     
     int addGroup(Group group);
     
+    int updateTeacher(Teacher teacher);
+    
+    int updateClassroom(Classroom classroom);
+    
+    int updateGroup(Group group);
+    
+    int updateModule(Module module);
+    
 }
